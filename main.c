@@ -2,13 +2,9 @@
 
 int selection;
 
-void capitalConversation(char str[]){
-	for (int i = 0; i < strlen(str); i++) {
-		if (str[i] == 'z') str[i] = 'q';
-		else if (str[i] == 'Z') str[i] = 'Q';
-		str[i] = toupper(str[i]);
-	}
-}
+void playfair(char, char, char);
+void removeDuplicates(char); 
+void capitalConversation(char);
 
 int main() {
     int p, q = 0;
@@ -115,7 +111,7 @@ void playfair(char ch1, char ch2, char key[5][5]) {
 	}
 
 	if (w == y) {
-		if (choice == 1) {
+		if (selection == 1) {
 			x = (x + 1) % 5;
 			z = (z + 1) % 5;
 		}
@@ -126,7 +122,7 @@ void playfair(char ch1, char ch2, char key[5][5]) {
 		printf("%c%c", key[w][x], key[y][z]);
 	}
 	else if (x == z) {
-		if (choice == 1) {
+		if (selection == 1) {
 			w = (w + 1) % 5;
 			y = (y + 1) % 5;
 		}
@@ -159,3 +155,10 @@ void removeDuplicates(char str[]) {
 
 }
 
+void capitalConversation(char str[]){
+	for (int i = 0; i < strlen(str); i++) {
+		if (str[i] == 'z') str[i] = 'q';
+		else if (str[i] == 'Z') str[i] = 'Q';
+		str[i] = toupper(str[i]);
+	}
+}

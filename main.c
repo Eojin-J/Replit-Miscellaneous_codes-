@@ -1,39 +1,55 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
 
 int selection;
 
-void playfair(char, char, char);
-void removeDuplicates(char); 
-void capitalConversation(char);
+void playfair(char ch1, char ch2, char key[5][5]);
+void duplicateRemove(char str[]);
+void removeBlank(char str[]);
+void capitalConversation(char str[]);
+
 
 int main() {
     int p, q = 0;
     int k = 0;
     int keylen;
 
-    char keytable[5][5], nokeyword[26], keystr[26], plainstr[100] = {0};
+    char keytable[5][5], nokeyword[26], keystr[26] = {0};
+    char plainstr[100];
     char abc[26] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
-    printf("-----------Playfair Cryptography Program-----------\n");
-    printf("\n1. Encrypt \n2. Decrypt \n Please choose 1 or 2.\n\n");
-    scanf("%d", &selection);
+    while(1){
+	    printf("-----------Playfair Cryptography Program-----------\n");
+	    printf("\n 1. Encrypt \n 2. Decrypt \n\n Please choose 1 or 2. \t your selection : ");
+	    scanf("%d", &selection);
+	    
+	    if(selection != 1 && selection !=2){
+	    	continue;
+		}
+		else
+			break;
+	    
+	}
 
-    if(selection != 1 && selection !=2){
-        printf("\n1. Encrypt \n2. Decrypt \n Please choose 1 or 2.\n\n");
-    }
-
-    printf(" Please enter the key value you want. \n");
+    printf("\n Please enter the key value you want. Please enter only one word. You can't space it out. \n");
     printf(" key value : ");
     scanf("%s", keystr);
 
-    printf(" Please enter the plain text you want. \n");
+    printf("\n Please enter the plain text you want. You can enter up to 100 characters including spaces.\n");
     printf(" plain text : ");
-    scanf("%s", plainstr);
+    fgets(plainstr, 100, stdin);
+    scanf("%[^\n]s", plainstr);
 
     duplicateRemove(keystr);
     keylen = strlen(keystr);
 
     capitalConversation(keystr);
+    
+    removeBlank(plainstr);
+    printf("%s", plainstr);
     capitalConversation(plainstr);
 
     // 키값 저장
@@ -48,8 +64,10 @@ int main() {
 		}
 	}
 
+	printf("\n ----------- key table ----------- \n");
     //키값 표 만들기
 	for (int i = 0; i < 5; i++) {
+		printf("\n \t     ");
 		for (int j = 0; j < 5; j++) {
 			if (k < keylen) {
 				keytable[i][j] = keystr[k];
@@ -63,9 +81,10 @@ int main() {
 		}
 		printf("\n");
 	}
+	printf("\n --------------------------------- \n");
 
 	// 결과 출력 및 같은 문자 마지막 문자, Q/Z 고려 
-	printf("\n입력된 문장 : %s \n변환된 문장 : ", plainstr);
+	printf("\n Plain Text : %s \n\n Cipher Text: ", plainstr);
 
 	for (int i = 0; i < strlen(plainstr); i++) {
 		if (plainstr[i] == 'Z') plainstr[i] = 'Q';
@@ -138,7 +157,7 @@ void playfair(char ch1, char ch2, char key[5][5]) {
 }
 
 
-void removeDuplicates(char str[]) {
+void duplicateRemove(char str[]) {
 	int hash[256] = { 0 };
 	int currentIndex = 0;
 	int lastUniqueIndex = 0;
@@ -152,13 +171,21 @@ void removeDuplicates(char str[]) {
 		currentIndex++;
 	}
 	*(str + lastUniqueIndex) = '\0';
-
 }
 
+void removeBlank(char str[]){
+	str = (char *)malloc(sizeof(str));
+    int k = 0;
+
+    for (int i = 0; i < strlen(str); i++)
+        if (str[i] != ' ') str[k++] = str[i];
+
+    str[k] = '\0';
+    
+}
 void capitalConversation(char str[]){
-	for (int i = 0; i < strlen(str); i++) {
-		if (str[i] == 'z') str[i] = 'q';
-		else if (str[i] == 'Z') str[i] = 'Q';
-		str[i] = toupper(str[i]);
+	int index;
+	for (index = 0; index < strlen(str); index++){
+		str[index] = (char)toupper(str[index]);
 	}
 }
